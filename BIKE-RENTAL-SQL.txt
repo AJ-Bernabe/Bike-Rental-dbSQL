@@ -1,0 +1,171 @@
+/* Creates Customer table */
+
+CREATE TABLE Bicycle_COSTUMER(
+CustomerID# NUMBER(2),
+LastName VARCHAR2(16) NOT NULL,
+FirstName VARCHAR2(16) NOT NULL,
+Telephone VARCHAR2(10) NOT NULL,
+City VARCHAR2(12),
+TodayDate VARCHAR(12),
+TodayTime VARCHAR(12),
+Age NUMBER,
+CONSTRAINT BicycleCostumer_Age_CK CHECK (Age>=12),
+CONSTRAINT BicycleCostumer_ID#_pk PRIMARY KEY(ID#)
+);
+
+/* Insert values in Customer table */
+
+INSERT INTO BICYCLE_COSTUMER
+VALUES (01, 'JAMES', 'BRIAN', '1222333444', 'Toronto', '', '',20);
+INSERT INTO BICYCLE_COSTUMER
+VALUES (02, 'REIDER', 'JOHN', '1222444333', 'Mississauga', '', '',23);
+INSERT INTO BICYCLE_COSTUMER
+VALUES (03, 'RYAN', 'JESS', '1333666333', 'Mississauga', '', '', 23);
+INSERT INTO BICYCLE_COSTUMER
+VALUES (04, 'BONITA', 'PAPITO', '1888999333', 'Toronto', '', '', 35);
+INSERT INTO BICYCLE_COSTUMER
+VALUES (05, 'LEAH', 'LEAN', '1222999333', 'Brampton', '', '',15);
+
+
+ALTER TABLE BICYCLE_COSTUMER
+DROP COLUMN TodayDate
+
+ALTER TABLE BICYCLE_COSTUMER
+DROP COLUMN TodayTime
+
+ALTER TABLE BICYCLE_COSTUMER
+DROP COLUMN CITY
+
+ALTER TABLE BICYCLE_COSTUMER
+RENAME COLUMN ID# TO COSTUMERID#
+
+ALTER TABLE RENT_DETAIL
+RENAME COLUMN ID# TO RENTID#
+
+ALTER TABLE RENT_DETAIL
+RENAME COLUMN CUSTOMERID# TO COSTUMERID#;
+
+__________________________________________________________________________________
+
+SELECT FIRSTNAME, LASTNAME, BIKETYPE 
+FROM BICYCLE_COSTUMER JOIN RENT_DETAIL USING(COstUmerID#)
+JOIN BIKETYPE USING(BIKEID) WHERE LASTNAME = 'JAMES';
+
+SELECT RENTID#,TOTALPRICE,BIKETYPE 
+FROM BIKETYPE JOIN RENT_DETAIL USING(BIKEID)
+
+__________________________________________________________________________________
+
+/* Creates BikeType table */
+
+CREATE TABLE BikeType(
+BikeID NUMBER(2),
+BikeType VARCHAR(12) NOT NULL,
+BikeColour VARCHAR(12) NOT NULL,
+BicycleCostumerID# NUMBER(2),
+CONSTRAINT BikeType_BikeID_pk primary key(bikeid),
+CONSTRAINT BikeType_ID#_fk foreign key (BicycleCostumerID#) references Bicycle_Costumer(ID#)
+);
+
+/* Insert values in BikeType table */
+
+INSERT INTO BIKETYPE
+VALUES (99, 'Mountain', 'red', 05);
+INSERT INTO BIKETYPE
+VALUES (98, 'Casual', 'yellow', 04);
+INSERT INTO BIKETYPE
+VALUES (97, 'Mountain', 'blue', 03);
+INSERT INTO BIKETYPE
+VALUES (96, 'Casual', 'blue', 02);
+INSERT INTO BIKETYPE
+VALUES (95, 'Mountain', 'black', 01);
+
+___________________________________________________________________________________
+
+/* Creates Location table */
+
+CREATE TABLE Locate(
+LocationID# NUMBER(2),
+CountryID# varchar(4),
+City VARCHAR2(12),
+Zip VARCHAR2(6),
+CONSTRAINT Locate_LocationID#_pk PRIMARY KEY(LocationID#),
+CONSTRAINT Locate_CountryID#_fk FOREIGN KEY (CountryID#) references Country (CountryID#)
+);
+
+/* Insert values in Location table */
+
+INSERT INTO LOCATE
+VALUES (85,01, 'Toronto', 'M33222');
+INSERT INTO LOCATE
+VALUES (86,02, 'Atlanta', 'X33T33');
+INSERT INTO LOCATE
+VALUES (87,03, 'Mexico City', 'X33Y22');
+INSERT INTO LOCATE
+VALUES (88,04, 'Santa Clara', 'M34232');
+INSERT INTO LOCATE
+VALUES (89,05, 'Beijing', 'B33HK2');
+
+____________________________________________________________________________________
+
+/* Creates Country table */
+
+CREATE TABLE COUNTRY(
+CountryID# VARCHAR2(4)PRIMARY KEY,
+CountryName VARCHAR(12)
+);
+
+/* Insert values in Country table */
+
+INSERT INTO COUNTRY
+VALUES ('01', 'Canada');
+INSERT INTO COUNTRY
+VALUES ('02', 'America');
+INSERT INTO COUNTRY
+VALUES ('03', 'Mexico');
+INSERT INTO COUNTRY
+VALUES ('04', 'Cuba');
+INSERT INTO COUNTRY
+VALUES ('05', 'China');
+
+_____________________________________________________________________________________
+
+/* Creates Rent Details table */
+
+CREATE TABLE RENT_DETAIL(
+ID# NUMBER(2),
+Fee VARCHAR(7),
+DiscountCode VARCHAR(6),
+Discount VARCHAR(7),
+TotalPrice VARCHAR(7),
+Review VARCHAR(125) NULL,
+CustomerID# NUMBER(2),
+BikeID NUMBER(2),
+LocationID NUMBER (2),
+CONSTRAINT RentDetail_ID#_pk Primary Key(ID#),
+CONSTRAINT RentDetail_CustomerID#_fk foreign key (CustomerID#) references Bicycle_Costumer,
+CONSTRAINT RentDetail_BikeID_fk foreign key (BikeID) references BikeType,
+CONSTRAINT RentDetail_LocationID#_fk foreign key (LocationID) references Locate
+);
+
+/* Insert values in Rent Details table */
+
+INSERT INTO RENT_DETAIL
+VALUES (01,'','000000','','15.35','',01,99,85 );
+INSERT INTO RENTDETAIL
+VALUES (02,'','000000','','10.35','',02,98,86 );
+INSERT INTO RENTDETAIL
+VALUES (03,'','000000','','15.35','',03,97,87 );
+INSERT INTO RENTDETAIL
+VALUES (04,'','000000','','10.35','',04,96,88 );
+INSERT INTO RENTDETAIL
+VALUES (05,'','000000','','15.35','',05,95,89 );
+
+
+
+
+
+
+
+
+
